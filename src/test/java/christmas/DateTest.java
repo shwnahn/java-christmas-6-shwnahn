@@ -35,6 +35,7 @@ public class DateTest {
         assertEquals(DateErrorMessage, exception.getMessage());
     }
 
+    @Test
     void 날짜_숫자이외입력_예외() {
         // Given
         String invalidString = "abc";
