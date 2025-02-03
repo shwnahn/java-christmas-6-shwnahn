@@ -1,5 +1,7 @@
 package christmas;
 
+import christmas.validator.VisitDateValidator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +12,7 @@ public class DateTest {
     @Test
     void 날짜_정상_입력_시_저장() {
         // Given
-        int validDay = 15;
+        String validDay = "15";
         // When, Then
         assertDoesNotThrow(() -> VisitDateValidator.validate(validDay));
     }
@@ -18,7 +20,7 @@ public class DateTest {
     @Test
     void 날짜_최소값_미만_예외() {
         // Given
-        int invalidDay = 0;
+        String invalidDay = "0";
         // When
         Exception exception = assertThrows(IllegalArgumentException.class, () -> VisitDateValidator.validate(invalidDay));
         // Then
@@ -28,7 +30,7 @@ public class DateTest {
     @Test
     void 날짜_최대값_초과_예외() {
         // Given
-        int invalidDay = 32;
+        String invalidDay = "32";
         // When
         Exception exception = assertThrows(IllegalArgumentException.class, () -> VisitDateValidator.validate(invalidDay));
         // Then
@@ -39,7 +41,7 @@ public class DateTest {
     void 날짜_숫자이외입력_예외() {
         // Given
         String invalidString = "abc";
-        Double invalidDouble = 12.3;
+        String invalidDouble = "12.3";
         // When
         Exception exceptionString = assertThrows(IllegalArgumentException.class, () -> VisitDateValidator.validate(invalidString));
         Exception exceptionDouble = assertThrows(IllegalArgumentException.class, () -> VisitDateValidator.validate(invalidDouble));
