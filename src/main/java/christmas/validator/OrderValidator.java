@@ -1,33 +1,26 @@
 package christmas.validator;
 
 import christmas.model.Menu;
+import christmas.model.OrderItem;
 import christmas.repository.MenuRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static christmas.ErrorMessage.ERROR_INVALID_ORDER;
+import static christmas.ErrorMessage.ERROR_INVALID_ORDER_ONLY_DRINKS;
 
 public class OrderValidator {
-    public static void validate(String orderInput, MenuRepository menuRepository) {
-        String[] orderItems = orderInput.split(",");
+    // 리팩토링: 변환된 OrderItem 리스트를 검증
+    public static void validate(List<OrderItem> orderItems, MenuRepository menuRepository) {
         Set<String> uniqueMenus = new HashSet<>();
         boolean hasNonDrinkMenu = false;
         int totalMenuCount = 0;
 
-        for (String orderItem : orderItems) {
-            String[] parts = orderItem.split("-");
-            //[예외] (3) 메뉴 형식이 예시와 다르면
-            if (parts.length != 2) {
-                throw new IllegalArgumentException(ERROR_INVALID_ORDER);
-            }
-            String menuName = parts[0].trim();
-            int menuCount;
-            try {
-                menuCount = Integer.parseInt(parts[1].trim());
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException(ERROR_INVALID_ORDER);
-            }
+        for (OrderItem orderItem : orderItems) {
+            String menuName = orderItem.getMenu().getName();
+            int menuCount = orderItem.getQuantity();
 
             //[예외] (1) 메뉴판에 있는 메뉴가 아니면
             Menu menu;
@@ -56,13 +49,12 @@ public class OrderValidator {
         }
 
         if (!hasNonDrinkMenu) {
-            throw new IllegalArgumentException(ERROR_INVALID_ORDER);
+            throw new IllegalArgumentException(ERROR_INVALID_ORDER_ONLY_DRINKS);
         }
 
         //[예외] (6) 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다.
         if (totalMenuCount > 20) {
             throw new IllegalArgumentException(ERROR_INVALID_ORDER);
         }
-
     }
 }
