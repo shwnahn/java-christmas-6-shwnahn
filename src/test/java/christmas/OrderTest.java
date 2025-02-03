@@ -1,5 +1,6 @@
 package christmas;
 
+import christmas.repository.MenuRepository;
 import christmas.validator.OrderValidator;
 import org.junit.jupiter.api.Test;
 
