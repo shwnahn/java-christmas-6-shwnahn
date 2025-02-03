@@ -27,4 +27,8 @@ public class Order {
     public int getTotalPrice() {
         return totalPrice;
     }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
 }
